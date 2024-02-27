@@ -2,16 +2,25 @@ const loadData = async (searchText="13", isShowAll) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     displayPhone(data.data, isShowAll)
+    console.log(data.data, isShowAll)
 };
 
 const displayPhone = (phones, isShowAll) => {
     const divContainer = document.getElementById("div-container");
     divContainer.textContent = '';
     
+    const wrongDataText = document.getElementById("wrong-data");
+    if (phones.length === 0) {
+        wrongDataText.classList.remove("hidden")
+    }
+    else {
+        wrongDataText.classList.add("hidden")
+    }
 
     const showAll = document.getElementById("showAll-btn");
     if (phones.length > 12 && !isShowAll) {
         showAll.classList.remove("hidden");
+        toggleLoadingSppiner(false)
     }
     else {
         showAll.classList.add("hidden");
@@ -112,5 +121,3 @@ const toggleLoadingSppiner = (isLoading) => {
 function handleShowAll() {
     handlerSearch(true);
 }
-
-loadData()
